@@ -13,7 +13,7 @@ from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
 
 def wordle():
     def enter_action(s):
-        if s in FIVE_LETTER_WORDS:
+        if s.lower() in FIVE_LETTER_WORDS:
             currentRow = gw.get_current_row()
             if currentRow < N_ROWS - 1:
                 currentCol = 0
