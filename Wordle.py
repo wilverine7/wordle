@@ -10,13 +10,26 @@ import random
 from WordleDictionary import FIVE_LETTER_WORDS
 from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
 
-def wordle():
 
+def wordle():
     def enter_action(s):
-        gw.show_message("You have to implement this method.")
+        if s in FIVE_LETTER_WORDS:
+            currentRow = gw.get_current_row()
+            if currentRow < N_ROWS - 1:
+                currentCol = 0
+                while currentCol < N_COLS:
+                    gw.set_square_letter(currentRow, currentCol, s[currentCol])
+                    currentCol += 1
+                gw.set_current_row(currentRow + 1)
+                # gw.show_message(row)
+            else:
+                gw.show_message("You have reached the end of the board. You lose.")
+        else:
+            gw.show_message("That is not a valid word.")
 
     gw = WordleGWindow()
     gw.add_enter_listener(enter_action)
+
 
 # Startup code
 
