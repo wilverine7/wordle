@@ -34,22 +34,50 @@ def wordle():
                 gw.set_square_letter(currentRow, currentCol, s[currentCol])
                 if s[currentCol].lower() == solution[currentCol]:
                     gw.set_square_color(currentRow, currentCol, "#66BB66")
-
                 currentCol += 1
+
+            letter_counts_solution = {}
+            letter_counts_guess = {}
+
+            for i in range(N_COLS):
+                letter_solution = solution[i].lower()
+                letter_guess = s[i].lower()
+
+                if letter_solution == letter_guess:
+                    continue
+
+                letter_counts_solution[letter_solution] = (
+                    letter_counts_solution.get(letter_solution, 0) + 1
+                )
+                letter_counts_guess[letter_guess] = (
+                    letter_counts_guess.get(letter_guess, 0) + 1
+                )
 
             currentCol = 0
             while currentCol < N_COLS:
-                count = solution.count(s[currentCol].lower())
                 color = gw.get_square_color(currentRow, currentCol)
-                if s[currentCol].lower() in solution and color != "#66BB66":
-                    gw.set_square_color(currentRow, currentCol, "#CCBB66")
+                print("Guess count:", letter_counts_guess.get(s[currentCol].lower(), 0))
+                print(
+                    "Solution count:",
+                    letter_counts_solution.get(s[currentCol].lower(), 0),
+                )
 
-                elif s[currentCol].lower() not in solution and color != "#66BB66":
+                if s[currentCol].lower() in solution and color != "#66BB66":
+                    print("In solution")
+                    if letter_counts_solution.get(
+                        s[currentCol].lower(), 0
+                    ) >= letter_counts_guess.get(s[currentCol].lower(), 0):
+                        gw.set_square_color(currentRow, currentCol, "#CCBB66")
+                    else:
+                        gw.set_square_color(currentRow, currentCol, "#999999")
+                elif s[currentCol].lower() not in solution:
                     gw.set_square_color(currentRow, currentCol, "#999999")
                 currentCol += 1
+
             gw.set_current_row(currentRow + 1)
         elif s.lower() not in FIVE_LETTER_WORDS:
             gw.show_message("That is not a valid word.")
+
         # totalCorrect = 0
         # # s is the string that the user enters all strings are lowered in the list
         # if s.lower() in FIVE_LETTER_WORDS:
